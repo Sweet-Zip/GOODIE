@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
+    android:background="@drawable/round_button_grid"
+    android:elevation="3dp"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/productImageView"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Test"
+        android:textColor="@color/main"
+        android:textSize="18dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="2.5dp"
+            android:text="50.00"
+            android:textAlignment="textEnd"
+            android:textColor="@color/red"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/dollarTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2.5dp"
+            android:layout_toStartOf="@+id/priceTextView"
+            android:text="$"
+            android:textAlignment="textEnd"
+            android:textColor="@color/red"
+            android:textSize="15dp"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
