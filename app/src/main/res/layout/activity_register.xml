@@ -106,55 +106,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passRegisterEditText" />
 
-    <TextView
-        android:id="@+id/genderText"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:text="Gender:"
-        android:textColor="@color/main"
-        android:textSize="16dp"
-        app:layout_constraintStart_toStartOf="@+id/confirmPassEditText"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPassEditText" />
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toEndOf="@+id/genderText"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPassEditText">
-
-        <RadioButton
-            android:id="@+id/maleRadio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="25dp"
-            android:text="Male"
-            android:textColor="@color/main" />
-
-        <RadioButton
-            android:id="@+id/femaleRadio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="25dp"
-            android:text="Female"
-            android:textColor="@color/main" />
-    </RadioGroup>
-
-
     <CheckBox
         android:id="@+id/termCheckBox"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="28dp"
         android:text="Do you agree to the terms and conditions of the membership?"
+        app:layout_constraintBottom_toBottomOf="@+id/ellipse_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/genderText" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/registerBtn"
@@ -174,13 +134,15 @@
         app:layout_constraintVertical_bias="0.10" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/relativeLayout2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/registerBtn"
-        tools:layout_editor_absoluteX="32dp">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerBtn">
 
         <TextView
             android:id="@+id/joinText"
@@ -194,10 +156,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/joinText"
-            android:textStyle="bold"
             android:text="Login!"
-            android:textColor="@color/main" />
+            android:textColor="@color/main"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBarReg"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/teal_200"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

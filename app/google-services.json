@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "322871782267",
+    "project_id": "goodie-685c9",
+    "storage_bucket": "goodie-685c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322871782267:android:f62a201624d80f7f37ebde",
+        "android_client_info": {
+          "package_name": "com.example.goodie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322871782267-d6p86ji11me9m24e52gvqcbplo65m1g6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaLTrF6YQXfjMoPhaJiVchyZUmogDo8Eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322871782267-d6p86ji11me9m24e52gvqcbplo65m1g6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

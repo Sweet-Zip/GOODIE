@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.goodie.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class FirstActivity extends AppCompatActivity {
 
     Button loginBtn, registerBtn;
+    private FirebaseAuth authProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,7 @@ public class FirstActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
+        authProfile = FirebaseAuth.getInstance();
         loginBtn = findViewById(R.id.loginBtn);
         registerBtn = findViewById(R.id.registerBtn);
 
@@ -37,5 +39,15 @@ public class FirstActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (authProfile != null) {
+            Intent intent = new Intent(FirstActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
