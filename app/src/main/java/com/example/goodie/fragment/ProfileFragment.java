@@ -1,23 +1,30 @@
 package com.example.goodie.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.goodie.R;
+import com.example.goodie.activity.ChangePasswordActivity;
 import com.example.goodie.activity.FirstActivity;
 import com.example.goodie.activity.MainActivity;
+import com.example.goodie.activity.UploadProfileActivity;
 import com.example.goodie.model.ReadWriteUserDetails;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +53,7 @@ public class ProfileFragment extends Fragment {
     private TextView emailTextView, passwordTextView, createDateTextView, logoutTextView, usernameTextView, idTextView;
     private String email, username, createDate;
     private FirebaseAuth authProfile;
-    private Button button;
+    private ImageView profileImage;
     private FirebaseUser firebaseUser;
     private ProgressBar progressBar;
 
@@ -90,30 +99,48 @@ public class ProfileFragment extends Fragment {
         passwordTextView = rootView.findViewById(R.id.passTextViewInfo);
         createDateTextView = rootView.findViewById(R.id.createDateEdit);
         logoutTextView = rootView.findViewById(R.id.logoutTextView);
-        button = rootView.findViewById(R.id.signoutBtn);
         progressBar = rootView.findViewById(R.id.progressBarProfile);
         idTextView = rootView.findViewById(R.id.userID);
+        profileImage = rootView.findViewById(R.id.profileImageView);
+        passwordTextView = rootView.findViewById(R.id.passTextViewInfo);
         authProfile = FirebaseAuth.getInstance();
+        firebaseUser = authProfile.getCurrentUser();
+        if (firebaseUser == null) {
+            Toast.makeText(getActivity().getApplicationContext(), "Something went wrong! User's details are not available at the moment", Toast.LENGTH_LONG).show();
+            usernameTextView.setText("Not found");
+            emailTextView.setText("Not found");
+            createDateTextView.setText("Not found");
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+            ShowUserProfile(firebaseUser);
+        }
         logoutTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 authProfile.signOut();
-
                 System.out.println("Log out");
-                Toast.makeText(getActivity(), "Logout",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Logout", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), FirstActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 getActivity().finish();
             }
         });
-        firebaseUser = authProfile.getCurrentUser();
-        if (firebaseUser == null) {
-            Toast.makeText(getActivity().getApplicationContext(), "Something went wrong! User's details are not available at the moment", Toast.LENGTH_LONG).show();
-        } else {
-            progressBar.setVisibility(View.VISIBLE);
-            ShowUserProfile(firebaseUser);
-        }
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UploadProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        passwordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -125,7 +152,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ReadWriteUserDetails readUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
-                if (readUserDetails != null){
+                if (readUserDetails != null) {
                     username = firebaseUser.getDisplayName();
                     email = firebaseUser.getEmail();
                     createDate = readUserDetails.date;
@@ -133,6 +160,14 @@ public class ProfileFragment extends Fragment {
                     emailTextView.setText(email);
                     createDateTextView.setText(createDate);
 //                    idTextView.setText(firebaseUser.getUid());
+
+                    Uri uri = firebaseUser.getPhotoUrl();
+                    Picasso.with(getActivity().getApplicationContext()).load(uri).into(profileImage);
+
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Something went wrong! User's details are not available at the moment",
+                            Toast.LENGTH_LONG).show();
                 }
                 progressBar.setVisibility(View.GONE);
             }

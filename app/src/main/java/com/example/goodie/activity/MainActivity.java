@@ -1,19 +1,25 @@
 package com.example.goodie.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,19 +40,23 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView titleToolBar;
     ImageView imageViewToolBar;
-    SearchView searchView;
+    FrameLayout mainFragment;
+    private static final int STORAGE_PERMISSION_CODE = 101;
+    private static final int CAMERA_PERMISSION_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-
+        final RelativeLayout.LayoutParams params1 = params;
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE);
+        ConstraintLayout constraintLayout = findViewById(R.id.parent_layout);
+        ConstraintSet constraintSet = new ConstraintSet();
         titleToolBar = findViewById(R.id.titleToolBar);
         toolbar = findViewById(R.id.toolbar);
         imageViewToolBar = findViewById(R.id.logoToolBar);
+        mainFragment = findViewById(R.id.mainFragment);
         setSupportActionBar(toolbar);
-        searchView = findViewById(R.id.searchView);
-        searchView.setQueryHint("Search...");
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, new HomeFragment()).commit();
         badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.cart);
@@ -63,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                     titleToolBar.setLayoutParams(params);
                     titleToolBar.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
                     imageViewToolBar.setVisibility(View.VISIBLE);
-                    searchView.setVisibility(View.VISIBLE);
                     replaceFragment(new HomeFragment());
                     break;
                 case R.id.cart:
@@ -74,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     titleToolBar.setLayoutParams(params);
                     titleToolBar.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
                     imageViewToolBar.setVisibility(View.INVISIBLE);
-                    searchView.setVisibility(View.INVISIBLE);
                     replaceFragment(new CartFragment());
                     break;
                 case R.id.profile:
@@ -85,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                     titleToolBar.setLayoutParams(params);
                     titleToolBar.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
                     imageViewToolBar.setVisibility(View.INVISIBLE);
-                    searchView.setVisibility(View.INVISIBLE);
                     replaceFragment(new ProfileFragment());
                     break;
             }
@@ -93,6 +100,43 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void checkPermission(String permission, int requestCode)
+    {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
+
+            // Requesting the permission
+            ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode,
+                permissions,
+                grantResults);
+
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+            }
+            else {
+                Toast.makeText(MainActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+            }
+        }
+        else if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(MainActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     @Override
     public void onBackPressed() {
         /*if (doubleBackToExitPressedOnce) {

@@ -14,6 +14,7 @@ public class FirstActivity extends AppCompatActivity {
 
     Button loginBtn, registerBtn;
     private FirebaseAuth authProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +45,10 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (authProfile != null) {
-            Intent intent = new Intent(FirstActivity.this, MainActivity.class);
+        if (authProfile == null || authProfile.getCurrentUser() == null) {
+
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }

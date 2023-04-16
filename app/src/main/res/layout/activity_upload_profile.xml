@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.UploadProfileActivity">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="Upload Your Profile Picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/main"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/selectProfileBtn"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="Select"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/round_button_second"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <ImageView
+        android:id="@+id/selectProfileImage"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="75dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectProfileBtn"
+        android:src="@drawable/select"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/uploadProfileBtn"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:background="@drawable/round_button"
+        android:text="Upload"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectProfileImage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
