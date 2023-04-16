@@ -16,16 +16,19 @@
         android:theme="@style/Theme.Goodie"
         tools:targetApi="31">
         <activity
-            android:name=".activity.ChangePasswordActivity"
-            android:parentActivityName=".activity.MainActivity"
+            android:name=".activity.AdminMainActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.UploadProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ForgetPasswordActivity"
             android:exported="false"
-            android:parentActivityName=".activity.LoginActivity"/>
+            android:parentActivityName=".activity.LoginActivity" />
         <activity
             android:name=".activity.RegisterActivity"
             android:exported="false" />

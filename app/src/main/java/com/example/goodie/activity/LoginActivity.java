@@ -17,11 +17,17 @@ import android.widget.Toast;
 
 import com.example.goodie.function.CustomEditText;
 import com.example.goodie.R;
+import com.example.goodie.model.ReadWriteUserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView registerText, forgetPassText;
@@ -29,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passEditText;
     private FirebaseAuth authProfile;
     private ProgressBar progressBar;
+    private String userType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,18 +94,46 @@ public class LoginActivity extends AppCompatActivity {
         authProfile.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = authProfile.getCurrentUser();
-                    if (firebaseUser.isEmailVerified()){
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+
+                    if (firebaseUser.isEmailVerified()) {
+                        String userId = firebaseUser.getUid();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered users");
+                        reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ReadWriteUserDetails readUserDetails = snapshot.getValue(ReadWriteUserDetails.class);
+                                if (readUserDetails != null) {
+                                    userType = readUserDetails.type;
+                                    if (userType.equals("customer")) {
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "You are login as admin.", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } else {
+                                    Toast.makeText(LoginActivity.this,
+                                            "Something went wrong! User's details are not available at the moment",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
                     } else {
                         firebaseUser.sendEmailVerification();
                         authProfile.signOut();
                         ShowAlertDialog();
                     }
-
                 } else {
                     Toast.makeText(LoginActivity.this, "Email or password is invalid, please try again", Toast.LENGTH_SHORT).show();
                 }
@@ -106,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void ShowAlertDialog(){
+    private void ShowAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle("Email not verify");
         builder.setMessage("Please verify your email to become fully part of us");

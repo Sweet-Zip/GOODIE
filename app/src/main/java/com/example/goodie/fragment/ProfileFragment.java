@@ -162,7 +162,11 @@ public class ProfileFragment extends Fragment {
 //                    idTextView.setText(firebaseUser.getUid());
 
                     Uri uri = firebaseUser.getPhotoUrl();
-                    Picasso.with(getActivity().getApplicationContext()).load(uri).into(profileImage);
+                    if (uri == null){
+                        profileImage.setImageResource(R.drawable.logo);
+                    } else {
+                        Picasso.with(getActivity().getApplicationContext()).load(uri).into(profileImage);
+                    }
 
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(),
