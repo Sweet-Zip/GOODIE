@@ -2,14 +2,25 @@ package com.example.goodie.model;
 
 public class Product {
     private int id;
-    private String title;
-    private String price;
+    private String productName;
+    private double price;
+    private String fileName;
+    private String fileCode;
+    private String downloadUri;
+    private long size;
 
-    public Product(int id, String title, String price) {
+
+    public Product(int id, String productName, double price, String fileName, String fileCode, String downloadUri, long size) {
         this.id = id;
-        this.title = title;
+        this.productName = productName;
         this.price = price;
+        this.fileName = fileName;
+        this.fileCode = fileCode;
+        this.downloadUri = downloadUri;
+        this.size = size;
     }
+
+    public Product(){}
 
     public int getId() {
         return id;
@@ -19,19 +30,51 @@ public class Product {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileCode() {
+        return fileCode;
+    }
+
+    public void setFileCode(String fileCode) {
+        this.fileCode = fileCode;
+    }
+
+    public String getDownloadUri() {
+        return downloadUri;
+    }
+
+    public void setDownloadUri(String downloadUri) {
+        this.downloadUri = downloadUri;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 }

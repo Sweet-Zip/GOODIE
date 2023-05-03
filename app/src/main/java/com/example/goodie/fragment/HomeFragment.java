@@ -4,18 +4,31 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.goodie.function.GridAdapter;
 import com.example.goodie.R;
+import com.example.goodie.model.Product;
+import com.example.goodie.retrofit.ProductApi;
+import com.example.goodie.retrofit.RetrofitService;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,11 +43,6 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    String[] title = {"Test", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8"};
-    int[] imageId = {R.drawable.logo, R.drawable.logo, R.drawable.logo,
-            R.drawable.logo, R.drawable.logo, R.drawable.logo,
-            R.drawable.logo, R.drawable.logo, R.drawable.logo};
-    String[] price = {"11.00", "12.00", "13.00", "14.00", "15.00", "16.00", "17.00", "16.00", "17.00"};
     private int position;
     GridAdapter gridAdapter;
     GridView gridView;
@@ -59,35 +67,42 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            if (title == null){
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        loadProduct(rootView);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int productId = (int) view.getTag();
+                Toast.makeText(getActivity().getApplicationContext(), String.valueOf(productId), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return rootView;
+    }
 
-                FrameLayout frameLayout = new FrameLayout(getActivity());
-                frameLayout.setLayoutParams(params);
+    private void loadProduct(View view) {
 
-                final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
-                        .getDisplayMetrics());
-                TextView backupTextView = new TextView(getActivity());
-                params.setMargins(margin, margin, margin, margin);
-                backupTextView.setLayoutParams(params);
-                backupTextView.setLayoutParams(params);
-                backupTextView.setGravity(Gravity.CENTER);
-                backupTextView.setText("No Data");
-                frameLayout.addView(backupTextView);
-                return frameLayout;
-            } else {
-                View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-                gridView = (GridView) rootView.findViewById(R.id.homeGridView);
-                gridAdapter = new GridAdapter(getActivity().getApplicationContext(), title, price, imageId);
+        gridView = view.findViewById(R.id.homeGridView);
+        gridView.setAdapter(new GridAdapter(getActivity(), new ArrayList<>()));
+        RetrofitService retrofitService = new RetrofitService();
+        ProductApi productApi = retrofitService.getRetrofit().create(ProductApi.class);
+        productApi.getAllData().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                List<Product> productList = response.body();
+                GridAdapter gridAdapter = new GridAdapter(getActivity(), productList);
                 gridView.setAdapter(gridAdapter);
-                return rootView;
             }
 
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                Toast.makeText(getActivity().getApplicationContext(), "Failed to load Employee", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical"
     android:background="@drawable/round_button_grid"
     android:elevation="3dp"
@@ -13,7 +14,8 @@
         android:id="@+id/productImageView"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/titleTextView"

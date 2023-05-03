@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     private Toolbar toolBar;
-    private ImageView imageView;
+    private ImageView backIcon;
     private EditText currentPass, newPassEditText, conPassEditText;
     private TextView textView13;
     private FirebaseAuth authProfile;
@@ -44,7 +43,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         toolBar = findViewById(R.id.changePassToolBar);
-        imageView = findViewById(R.id.backIcon);
+        backIcon = findViewById(R.id.addProductBackIcon);
         currentPass = findViewById(R.id.currentPassEditText);
         newPassEditText = findViewById(R.id.newPassEditText);
         conPassEditText = findViewById(R.id.conPassEditText);
@@ -58,7 +57,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPassEditText.setEnabled(false);
         conPassEditText.setEnabled(false);
         confirmBtn.setEnabled(false);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ChangePasswordActivity.this.finish();

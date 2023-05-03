@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.goodie.R;
+import com.example.goodie.fragment.AdminHomeFragment;
 import com.example.goodie.fragment.CartFragment;
 import com.example.goodie.fragment.HomeFragment;
 import com.example.goodie.fragment.ProfileFragment;
@@ -54,7 +56,7 @@ public class AdminMainActivity extends AppCompatActivity {
         floatingActionButton = findViewById(R.id.floatingBtnHome);
         setSupportActionBar(toolbar);
         bottomNavigationView = findViewById(R.id.adminBottomNavigationView);
-        getSupportFragmentManager().beginTransaction().replace(R.id.adminMainFragment, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.adminMainFragment, new AdminHomeFragment()).commit();
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.adminHome:
@@ -66,7 +68,7 @@ public class AdminMainActivity extends AppCompatActivity {
                     titleToolBar.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
                     imageViewToolBar.setVisibility(View.VISIBLE);
                     floatingActionButton.setVisibility(View.VISIBLE);
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new AdminHomeFragment());
                     break;
                 case R.id.categories:
                     titleToolBar.setText("Cart");
@@ -76,7 +78,7 @@ public class AdminMainActivity extends AppCompatActivity {
                     titleToolBar.setLayoutParams(params);
                     titleToolBar.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
                     imageViewToolBar.setVisibility(View.INVISIBLE);
-                    floatingActionButton.setVisibility(View.INVISIBLE);
+                    floatingActionButton.setVisibility(View.GONE);
                     replaceFragment(new CartFragment());
                     break;
                 case R.id.adminProfile:
@@ -87,11 +89,18 @@ public class AdminMainActivity extends AppCompatActivity {
                     titleToolBar.setLayoutParams(params);
                     titleToolBar.setGravity(Gravity.CENTER | Gravity.CENTER_VERTICAL);
                     imageViewToolBar.setVisibility(View.INVISIBLE);
-                    floatingActionButton.setVisibility(View.INVISIBLE);
+                    floatingActionButton.setVisibility(View.GONE);
                     replaceFragment(new ProfileFragment());
                     break;
             }
             return true;
+        });
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminMainActivity.this, AddProductActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -100,8 +109,6 @@ public class AdminMainActivity extends AppCompatActivity {
 
             // Requesting the permission
             ActivityCompat.requestPermissions(AdminMainActivity.this, new String[]{permission}, requestCode);
-        } else {
-            Toast.makeText(AdminMainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
         }
     }
 
