@@ -23,9 +23,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.AddCategoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.AdminDetailActivity"
             android:exported="false"
-            android:parentActivityName=".activity.AdminMainActivity"/>
+            android:parentActivityName=".activity.AdminMainActivity" />
         <activity
             android:name=".activity.AddProductActivity"
             android:exported="false"

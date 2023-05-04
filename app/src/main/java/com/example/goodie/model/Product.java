@@ -7,16 +7,20 @@ public class Product {
     private String fileName;
     private String fileCode;
     private String downloadUri;
+    private String productDetail;
+    private String category;
     private long size;
 
 
-    public Product(int id, String productName, double price, String fileName, String fileCode, String downloadUri, long size) {
+    public Product(int id, String productName, double price, String fileName, String fileCode, String downloadUri, String productDetail, String category, long size) {
         this.id = id;
         this.productName = productName;
         this.price = price;
         this.fileName = fileName;
         this.fileCode = fileCode;
         this.downloadUri = downloadUri;
+        this.productDetail = productDetail;
+        this.category = category;
         this.size = size;
     }
 
@@ -77,4 +81,22 @@ public class Product {
     public void setSize(long size) {
         this.size = size;
     }
+
+    public String getProductDetail() {
+        return productDetail;
+    }
+
+    public void setProductDetail(String productDetail) {
+        this.productDetail = productDetail;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
 }

@@ -18,7 +18,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
-public interface ProductApi {
+public interface ServerApi {
     @GET("/product")
     Call<List<Product>> getAllData();
 
@@ -28,12 +28,29 @@ public interface ProductApi {
             @Part MultipartBody.Part file,
             @Part("productName") RequestBody productName,
             @Part("price") RequestBody price,
-            @Part("productDetail") RequestBody productDetail
+            @Part("productDetail") RequestBody productDetail,
+            @Part("category") RequestBody category
     );
 
-    //@Streaming
+    @Multipart
+    @PUT("/product/update/{id}")
+    Call<Product> updateProduct(
+            @Path("id") long id,
+            @Part MultipartBody.Part file,
+            @Part("productName") RequestBody productName,
+            @Part("price") RequestBody price,
+            @Part("productDetail") RequestBody productDetail,
+            @Part("category") RequestBody category
+    );
+
+    @DELETE("/delete/{id}")
+    Call<Product> deleteProduct(@Path("id") int id);
+
     @GET("/downloadFile/{fileCode}")
     Call<ResponseBody> downloadFile(@Path("fileCode") String fileCode);
+
+    @GET("/product/{id}")
+    Call<Product> getProductByID(@Path("id") long id);
 
     @POST("/category/add")
     Call<Category> addCategory(@Body Category category);

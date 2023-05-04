@@ -10,13 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.goodie.R;
 import com.example.goodie.activity.AdminDetailActivity;
 import com.example.goodie.function.GridAdapter;
 import com.example.goodie.model.Product;
-import com.example.goodie.retrofit.ProductApi;
+import com.example.goodie.retrofit.ServerApi;
 import com.example.goodie.retrofit.RetrofitService;
 
 import java.util.ArrayList;
@@ -41,8 +42,11 @@ public class AdminHomeFragment extends Fragment {
     private String mParam2;
 
     private int position;
-    GridAdapter gridAdapter;
-    GridView gridView;
+    private GridAdapter gridAdapter;
+
+    private List<Product> productList;
+
+    private GridView gridView;
 
     public AdminHomeFragment() {
         // Required empty public constructor
@@ -78,31 +82,44 @@ public class AdminHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_admin_home, container, false);
         loadProduct(rootView);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int productId = (int) view.getTag();
                 Toast.makeText(getActivity().getApplicationContext(), String.valueOf(productId), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity().getApplicationContext(), AdminDetailActivity.class);
+                intent.putExtra("id", productId);
                 startActivity(intent);
+            }
+        });
+        SearchView searchView = rootView.findViewById(R.id.productSearchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                gridAdapter.filter(newText);
+                return true;
             }
         });
         return rootView;
     }
 
     private void loadProduct(View view) {
-
         gridView = view.findViewById(R.id.homeGridView);
         gridView.setAdapter(new GridAdapter(getActivity(), new ArrayList<>()));
         RetrofitService retrofitService = new RetrofitService();
-        ProductApi productApi = retrofitService.getRetrofit().create(ProductApi.class);
+        ServerApi productApi = retrofitService.getRetrofit().create(ServerApi.class);
         productApi.getAllData().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 List<Product> productList = response.body();
-                GridAdapter gridAdapter = new GridAdapter(getActivity(), productList);
+                gridAdapter = new GridAdapter(getActivity(), productList);
                 gridView.setAdapter(gridAdapter);
             }
 

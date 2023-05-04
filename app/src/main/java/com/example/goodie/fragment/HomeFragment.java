@@ -2,26 +2,20 @@ package com.example.goodie.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.goodie.function.GridAdapter;
+import androidx.fragment.app.Fragment;
+
 import com.example.goodie.R;
+import com.example.goodie.function.GridAdapter;
 import com.example.goodie.model.Product;
-import com.example.goodie.retrofit.ProductApi;
 import com.example.goodie.retrofit.RetrofitService;
+import com.example.goodie.retrofit.ServerApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +83,7 @@ public class HomeFragment extends Fragment {
         gridView = view.findViewById(R.id.homeGridView);
         gridView.setAdapter(new GridAdapter(getActivity(), new ArrayList<>()));
         RetrofitService retrofitService = new RetrofitService();
-        ProductApi productApi = retrofitService.getRetrofit().create(ProductApi.class);
+        ServerApi productApi = retrofitService.getRetrofit().create(ServerApi.class);
         productApi.getAllData().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
@@ -104,5 +98,7 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
 
 }
