@@ -43,9 +43,6 @@ public class AdminHomeFragment extends Fragment {
 
     private int position;
     private GridAdapter gridAdapter;
-
-    private List<Product> productList;
-
     private GridView gridView;
 
     public AdminHomeFragment() {
@@ -94,6 +91,7 @@ public class AdminHomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         SearchView searchView = rootView.findViewById(R.id.productSearchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

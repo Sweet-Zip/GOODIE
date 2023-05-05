@@ -1,17 +1,21 @@
 package com.example.goodie.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.goodie.R;
+import com.example.goodie.activity.AdminDetailActivity;
+import com.example.goodie.activity.DetailActivity;
 import com.example.goodie.function.GridAdapter;
 import com.example.goodie.model.Product;
 import com.example.goodie.retrofit.RetrofitService;
@@ -38,8 +42,8 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private int position;
-    GridAdapter gridAdapter;
-    GridView gridView;
+    private GridAdapter gridAdapter;
+    private GridView gridView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -68,11 +72,28 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         loadProduct(rootView);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int productId = (int) view.getTag();
                 Toast.makeText(getActivity().getApplicationContext(), String.valueOf(productId), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity().getApplicationContext(), DetailActivity.class);
+                intent.putExtra("id", productId);
+                startActivity(intent);
+            }
+        });
+
+        SearchView searchView = rootView.findViewById(R.id.productSearchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                gridAdapter.filter(newText);
+                return true;
             }
         });
         return rootView;
@@ -88,7 +109,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 List<Product> productList = response.body();
-                GridAdapter gridAdapter = new GridAdapter(getActivity(), productList);
+                gridAdapter = new GridAdapter(getActivity(), productList);
                 gridView.setAdapter(gridAdapter);
             }
 

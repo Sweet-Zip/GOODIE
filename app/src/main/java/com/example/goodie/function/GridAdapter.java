@@ -143,16 +143,6 @@ public class GridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void clearFilter() {
-        filteredProducts = new ArrayList<>();
-        filteredProducts.addAll(productList);
-
-        filteredProducts.clear();
-        filteredProducts.addAll(productList);
-        notifyDataSetChanged();
-    }
-
-
     public final void runOnUiThread(Runnable action) {
         if (Thread.currentThread() != mUiThread) {
             mHandler.post(action);
