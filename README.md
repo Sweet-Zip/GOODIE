@@ -3,4 +3,6 @@ Mobile Accessories E-commerce Mobile App
 
 ## Language: Java Adnroid
 
-Check backend java Spring Boot (API) project <h3>[HERE](https://github.com/Sweet-Zip/GoodieBackend.git)</h3>
+Check backend java Spring Boot (API) project 
+
+### [HERE](https://github.com/Sweet-Zip/GoodieBackend.git)
